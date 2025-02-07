@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
+import './style.css';
 
 export default function Home() {
   const [input, setInput] = useState('');
@@ -36,6 +38,12 @@ export default function Home() {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && e.shiftKey) {
+      handleSubmit(e as unknown as React.FormEvent);
+    }
+  };
+
   return (
     <main className="min-h-screen bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-2xl mx-auto">
@@ -57,6 +65,7 @@ export default function Home() {
               className="w-full rounded-lg border-gray-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-black text-white p-4"
               value={input}
               onChange={(e) => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
               placeholder="Type your message here..."
             />
           </div>
@@ -84,7 +93,9 @@ export default function Home() {
         {result && (
           <div className="mt-6 p-6 bg-gray-800 rounded-lg shadow">
             <h2 className="text-lg font-medium text-white mb-2">Response:</h2>
-            <p className="text-gray-300 whitespace-pre-wrap">{result}</p>
+            <ReactMarkdown className="text-gray-300 whitespace-pre-wrap markdown">
+              {result}
+            </ReactMarkdown>
           </div>
         )}
       </div>
